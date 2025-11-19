@@ -33,13 +33,14 @@
     </div>
   </div>
 
-  <script src="js/main.js"></script>
-  <script src="js/applicant.js"></script>
+  <!-- JS Files -->
+  <script src="main.js"></script>
+  <script src="applicant.js"></script>
   <script>
     // Load dashboard stats from localStorage
     updateApplicantDashboard();
 
-    // Logout button functionality
+    // Logout functionality
     document.getElementById('logout-btn').addEventListener('click', () => {
       localStorage.removeItem('currentApplicant');
       alert('Logged out!');
@@ -48,3 +49,4 @@
   </script>
 </body>
 </html>
+
