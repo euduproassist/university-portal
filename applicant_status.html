@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Application Status — University Portal</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family:"Inter","Segoe UI",sans-serif;
+      background: linear-gradient(135deg,#ff7a00 0%,#000 100%);
+      min-height:100vh;display:flex;flex-direction:column;align-items:center;
+      color:#222;
+    }
+    .container {
+      max-width:900px;width:100%;margin:40px auto;background:rgba(255,255,255,0.95);
+      padding:30px;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,0.3);
+    }
+    h1{font-size:2rem;color:#ff7a00;margin-bottom:20px;}
+    table {
+      width:100%;border-collapse:collapse;margin-bottom:20px;
+    }
+    th, td {
+      border:1px solid #ccc;padding:10px;text-align:left;
+    }
+    th {background:#ff7a00;color:#fff;}
+    tr:nth-child(even){background:#f9f9f9;}
+    .back-btn {
+      padding:12px 20px;background:#ff7a00;color:#fff;border:none;border-radius:6px;cursor:pointer;
+      font-weight:600;text-decoration:none;display:inline-block;
+    }
+    .back-btn:hover {background:#e66c00;}
+    footer{margin-top:40px;font-size:13px;color:#fff;text-align:center;padding:10px;opacity:.8;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Your Applications</h1>
+    <table id="applicationsTable">
+      <thead>
+        <tr>
+          <th>University</th>
+          <th>Courses</th>
+          <th>Documents</th>
+          <th>Payment Proof</th>
+          <th>Status</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Applications will be dynamically loaded here -->
+      </tbody>
+    </table>
+
+    <button class="back-btn" onclick="window.location.href='index.html'">Back to Dashboard</button>
+  </div>
+
+  <footer>© 2025 University Application Portal | Powered by UniHelp AI</footer>
+
+  <script src="applicant.js"></script>
+  <script>
+    function loadApplications() {
+      const tableBody = document.querySelector('#applicationsTable tbody');
+      tableBody.innerHTML = ''; // clear existing rows
+
+      const applications = JSON.parse(localStorage.getItem('applications')) || [];
+      if(applications.length === 0){
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.colSpan = 6;
+        cell.textContent = "No applications submitted yet.";
+        cell.style.textAlign = "center";
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+        return;
+      }
+
+      applications.forEach(app => {
+        const row = document.createElement('tr');
+
+        const universityCell = document.createElement('td');
+        universityCell.textContent = app.university;
+        row.appendChild(universityCell);
+
+        const coursesCell = document.createElement('td');
+        coursesCell.textContent = app.courses;
+        row.appendChild(coursesCell);
+
+        const docsCell = document.createElement('td');
+        docsCell.textContent = app.documents.join(', ');
+        row.appendChild(docsCell);
+
+        const paymentCell = document.createElement('td');
+        paymentCell.textContent = app.paymentProof.join(', ');
+        row.appendChild(paymentCell);
+
+        const statusCell = document.createElement('td');
+        statusCell.textContent = app.status;
+        row.appendChild(statusCell);
+
+        const notesCell = document.createElement('td');
+        notesCell.textContent = app.notes || '';
+        row.appendChild(notesCell);
+
+        tableBody.appendChild(row);
+      });
+    }
+
+    loadApplications();
+  </script>
+</body>
+</html>
