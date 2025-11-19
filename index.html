@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>University Portal — Applicant Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="choose-page">
+  <div class="container">
+    <h1>Welcome, Applicant 👩‍🎓</h1>
+
+    <div class="dashboard-stats">
+      <p>Total Applications Submitted: <span id="total-apps">0</span></p>
+      <p>Pending Applications: <span id="pending-apps">0</span></p>
+    </div>
+
+    <div class="university-buttons">
+      <button onclick="window.location.href='applicant_form.html'">
+        <img src="assets/logos/uj.png" alt="UJ Logo">
+        Submit New Application
+      </button>
+
+      <button onclick="window.location.href='applicant_status.html'">
+        <img src="assets/logos/uj.png" alt="UJ Logo">
+        Check Application Status
+      </button>
+
+      <button id="logout-btn">
+        <img src="assets/logos/uj.png" alt="UJ Logo">
+        Logout
+      </button>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/applicant.js"></script>
+  <script>
+    // Load dashboard stats from localStorage
+    updateApplicantDashboard();
+
+    // Logout button functionality
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      localStorage.removeItem('currentApplicant');
+      alert('Logged out!');
+      location.reload();
+    });
+  </script>
+</body>
+</html>
