@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Requests — University Portal</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family:"Inter","Segoe UI",sans-serif;
+      background: linear-gradient(135deg,#000,#ff7a00);
+      min-height:100vh;display:flex;flex-direction:column;align-items:center;
+      color:#222;
+    }
+    .container {
+      max-width:1200px;width:100%;margin:40px auto;background:rgba(255,255,255,0.95);
+      padding:30px;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,0.3);
+    }
+    h1{font-size:2rem;color:#ff7a00;margin-bottom:20px;}
+    table {
+      width:100%;border-collapse:collapse;margin-bottom:20px;
+    }
+    th, td {
+      border:1px solid #ccc;padding:10px;text-align:left;
+    }
+    th {background:#ff7a00;color:#fff;}
+    tr:nth-child(even){background:#f9f9f9;}
+    button.action-btn {
+      padding:6px 12px;margin-right:5px;border:none;border-radius:5px;
+      cursor:pointer;color:#fff;font-weight:600;
+    }
+    button.approve {background:#28a745;}
+    button.reject {background:#dc3545;}
+    button.save-note {background:#007bff;}
+    footer{margin-top:40px;font-size:13px;color:#fff;text-align:center;padding:10px;opacity:.8;}
+    textarea {width:100%;height:50px;padding:6px;border-radius:6px;border:1px solid #ccc;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Admin Requests</h1>
+    <table id="adminRequestsTable">
+      <thead>
+        <tr>
+          <th>Applicant Name</th>
+          <th>Email</th>
+          <th>University</th>
+          <th>Courses</th>
+          <th>Documents</th>
+          <th>Status</th>
+          <th>Notes</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Requests will load here -->
+      </tbody>
+    </table>
+    <button onclick="window.location.href='index.html'" class="action-btn" style="background:#ff7a00;">Back to Portal</button>
+  </div>
+
+  <footer>© 2025 University Application Portal | Powered by UniHelp AI</footer>
+
+  <script src="applicant.js"></script>
+  <script>
+    function loadAdminRequests() {
+      const tableBody = document.querySelector('#adminRequestsTable tbody');
+      tableBody.innerHTML = '';
+
+      const applications = JSON.parse(localStorage.getItem('applications')) || [];
+
+      if(applications.length === 0){
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.colSpan = 8;
+        cell.style.textAlign = 'center';
+        cell.textContent = "No requests submitted yet.";
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+        return;
+      }
+
+      applications.forEach((app, index) => {
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+          <td>${app.fullName}</td>
+          <td>${app.email}</td>
+          <td>${app.university}</td>
+          <td>${app.courses}</td>
+          <td>${app.documents.join(', ')}</td>
+          <td class="status">${app.status}</td>
+          <td><textarea class="note">${app.notes || ''}</textarea></td>
+          <td>
+            <button class="action-btn approve">Approve</button>
+            <button class="action-btn reject">Reject</button>
+            <button class="action-btn save-note">Save Note</button>
+          </td>
+        `;
+
+        tableBody.appendChild(row);
+
+        // Button actions
+        row.querySelector('.approve').addEventListener('click', () => {
+          applications[index].status = 'Approved';
+          saveApplications(applications);
+          loadAdminRequests();
+        });
+
+        row.querySelector('.reject').addEventListener('click', () => {
+          applications[index].status = 'Rejected';
+          saveApplications(applications);
+          loadAdminRequests();
+        });
+
+        row.querySelector('.save-note').addEventListener('click', () => {
+          applications[index].notes = row.querySelector('.note').value;
+          saveApplications(applications);
+          alert('Note saved!');
+        });
+      });
+    }
+
+    // Load requests on page load
+    document.addEventListener('DOMContentLoaded', loadAdminRequests);
+  </script>
+</body>
+</html>
