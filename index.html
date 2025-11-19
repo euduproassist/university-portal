@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>University Portal — Applicant Dashboard</title>
+  <title>University Application Portal — Applicant Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="choose-page">
@@ -17,17 +17,17 @@
 
     <div class="university-buttons">
       <button onclick="window.location.href='applicant_form.html'">
-        <img src="assets/logos/uj.png" alt="UJ Logo">
+        <img src="assets/logos/university.png" alt="University Logo">
         Submit New Application
       </button>
 
       <button onclick="window.location.href='applicant_status.html'">
-        <img src="assets/logos/uj.png" alt="UJ Logo">
+        <img src="assets/logos/university.png" alt="University Logo">
         Check Application Status
       </button>
 
       <button id="logout-btn">
-        <img src="assets/logos/uj.png" alt="UJ Logo">
+        <img src="assets/logos/university.png" alt="University Logo">
         Logout
       </button>
     </div>
@@ -37,7 +37,14 @@
   <script src="main.js"></script>
   <script src="applicant.js"></script>
   <script>
-    // Load dashboard stats from localStorage
+    // Update dashboard stats from localStorage
+    function updateApplicantDashboard() {
+      const applications = JSON.parse(localStorage.getItem('applications')) || [];
+      document.getElementById('total-apps').textContent = applications.length;
+      const pendingCount = applications.filter(app => app.status === 'Pending').length;
+      document.getElementById('pending-apps').textContent = pendingCount;
+    }
+
     updateApplicantDashboard();
 
     // Logout functionality
@@ -49,4 +56,5 @@
   </script>
 </body>
 </html>
+
 
